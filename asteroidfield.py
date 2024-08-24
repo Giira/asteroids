@@ -1,7 +1,5 @@
 import pygame
 import random
-
-from pygame.sprite import _Group
 from asteroid import Asteroid
 from constants import *
 
