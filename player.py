@@ -48,7 +48,16 @@ class Player(CircleShape):
 
         if keys[pygame.K_SPACE]:
             if self.rate_limit <= 0:
-                self.shoot()
+                if self.weapon == 0:
+                    self.shoot()
+                elif self.weapon == 1:
+                    self.arc_shoot()
+        
+        if keys[pygame.K_1]:
+            self.weapon = 0
+        
+        if keys[pygame.K_2]:
+            self.weapon = 1
 
     
     def move(self, dt):
@@ -57,8 +66,16 @@ class Player(CircleShape):
 
     
     def shoot(self):
-        shot = Shot(self.position.x, self.position.y)
+        shot = Shot(self.position.x, self.position.y, "green")
         shot.velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         self.rate_limit = PLAYER_SHOOT_COOLDOWN
 
+    
+    def arc_shoot(self):
+        angle = -30
+        for i in range(5):
+            shot = Shot(self.position.x, self.position.y, "red")
+            shot.velocity = pygame.Vector2(0,1).rotate(self.rotation + angle) * PLAYER_SHOOT_SPEED
+            angle += 15
+        self.rate_limit = 3 * PLAYER_SHOOT_COOLDOWN
     
