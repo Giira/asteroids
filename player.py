@@ -10,6 +10,7 @@ class Player(CircleShape):
         self.radius = PLAYER_RADIUS
         self.rotation = 0
         self.rate_limit = 0
+        self.weapon = 0
 
     
     def triangle(self):

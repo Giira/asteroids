@@ -26,6 +26,7 @@ def main():
     asteroid_field = AsteroidField()
 
     dt = 0
+    score = 0
     
     while True:
         for event in pygame.event.get():
@@ -38,11 +39,13 @@ def main():
         for asteroid in asteroids:
             if asteroid.collision_check(player):
                 print("Game Over!")
+                print(f"Score: {score}")
                 sys.exit()
             for shot in shots:
                 if shot.collision_check(asteroid):
                     shot.kill()
                     asteroid.split()
+                    score += 1
         
         screen.fill("black")
 
