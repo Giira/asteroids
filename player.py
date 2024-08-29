@@ -11,6 +11,7 @@ class Player(CircleShape):
         self.rotation = 0
         self.rate_limit = 0
         self.weapon = 0
+        self.burst = 5
 
     
     def triangle(self):
@@ -52,12 +53,17 @@ class Player(CircleShape):
                     self.shoot()
                 elif self.weapon == 1:
                     self.arc_shoot()
+                elif self.weapon == 2:
+                    self.burst_shoot()
         
         if keys[pygame.K_1]:
             self.weapon = 0
         
         if keys[pygame.K_2]:
             self.weapon = 1
+
+        if keys[pygame.K_3]:
+            self.weapon = 2
 
     
     def move(self, dt):
@@ -78,4 +84,15 @@ class Player(CircleShape):
             shot.velocity = pygame.Vector2(0,1).rotate(self.rotation + angle) * PLAYER_SHOOT_SPEED
             angle += 15
         self.rate_limit = 3 * PLAYER_SHOOT_COOLDOWN
+
+    
+    def burst_shoot(self):
+        if self.burst > 0:
+            shot = Shot(self.position.x, self.position.y, "blue")
+            shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
+            self.burst -= 1
+        else:    
+            self.rate_limit = 2 * PLAYER_SHOOT_COOLDOWN
+            self.burst = 5
+        
     
