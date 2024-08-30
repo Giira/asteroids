@@ -74,9 +74,6 @@ class Player(CircleShape):
         if keys[pygame.K_3]:
             self.weapon = 2
 
-        if keys[pygame.K_4]:
-            self.speed_boost()
-
     
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -111,7 +108,7 @@ class Player(CircleShape):
     def speed_boost(self):
         if not self.boost_on:
             self.boost_limit = 5
-            self.speed *= 3
+            self.speed *= 2.5
             self.boost_on = True
 
 
