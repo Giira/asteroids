@@ -12,6 +12,9 @@ class Player(CircleShape):
         self.rate_limit = 0
         self.weapon = 0
         self.burst = 5
+        self.speed = PLAYER_SPEED
+        self.boost_limit = 0
+        self.boost_on = False
 
     
     def triangle(self):
@@ -33,6 +36,12 @@ class Player(CircleShape):
     
     def update(self, dt):
         self.rate_limit -= dt
+        if self.boost_limit > 0:
+            self.boost_limit -= dt
+        else:
+            self.speed = PLAYER_SPEED
+            self.boost_on = False
+
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_a]:
@@ -65,10 +74,13 @@ class Player(CircleShape):
         if keys[pygame.K_3]:
             self.weapon = 2
 
+        if keys[pygame.K_4]:
+            self.speed_boost()
+
     
     def move(self, dt):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
-        self.position += forward * PLAYER_SPEED * dt
+        self.position += forward * self.speed * dt
 
     
     def shoot(self):
@@ -94,5 +106,14 @@ class Player(CircleShape):
         else:    
             self.rate_limit = 2 * PLAYER_SHOOT_COOLDOWN
             self.burst = 5
+
+
+    def speed_boost(self):
+        if not self.boost_on:
+            self.boost_limit = 5
+            self.speed *= 3
+            self.boost_on = True
+
+
         
     
