@@ -6,13 +6,14 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 from powerups import SpeedUp
-
+from menus import draw_start_menu
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("Asteroids")
     clock = pygame.time.Clock()
+    game_state = "start_menu"
       
     updateable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -36,35 +37,47 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+
+            if game_state == "start_menu":
+                draw_start_menu(screen)
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    rect = pygame.Rect(892, 640, 136, 71)
+                    if rect.collidepoint(event.pos):
+                        print("Go!")
+                        game_state = "game"
+                
+        if game_state == "game":
+
+            for object in updateable:
+                object.update(dt)
             
-        for object in updateable:
-            object.update(dt)
-        
-        for asteroid in asteroids:
-            if asteroid.collision_check(player):
-                print("Game Over!")
-                print(f"Score: {score}")
-                sys.exit()
-            for shot in shots:
-                if shot.collision_check(asteroid):
-                    shot.kill()
-                    asteroid.split()
-                    score += 1
-        
-        for powerup in powerups:
-            if powerup.collision_check(player):
-                powerup.kill()
-                player.speed_boost()
-        
-        screen.fill("black")
+            for asteroid in asteroids:
+                if asteroid.collision_check(player):
+                    print("Game Over!")
+                    print(f"Score: {score}")
+                    sys.exit()
+                for shot in shots:
+                    if shot.collision_check(asteroid):
+                        shot.kill()
+                        asteroid.split()
+                        score += 1
+            
+            for powerup in powerups:
+                if powerup.collision_check(player):
+                    powerup.kill()
+                    player.speed_boost()
+            
+            screen.fill("black")
 
-        for object in drawable:
-            object.draw(screen)
+            for object in drawable:
+                object.draw(screen)
 
-        pygame.display.flip()
-        
+            pygame.display.flip()
+            
 
-        dt = clock.tick(60) / 1000
+            dt = clock.tick(60) / 1000
+            
+
 
 
 if __name__ == "__main__":
