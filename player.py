@@ -120,5 +120,9 @@ class Player(CircleShape):
     def shield_powerup(self):
         if not self.shield_on:
             self.shield_on = True
+
+
+    def lose_life(self):
+        self.lives -= 1
         
     

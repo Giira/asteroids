@@ -26,3 +26,27 @@ def draw_pause_menu(screen):
     pygame.draw.rect(screen, "green", rect, 2, 15)
     screen.blit(start_button, (960 - (start_button.get_width() / 2), 645))
     pygame.display.update()
+
+
+def draw_respawn_menu(screen):
+    font = pygame.font.SysFont("elephant", 120)
+    small_font = pygame.font.SysFont("roboto", 60)
+    title = font.render('You lost a life!', True, "white")
+    start_button = small_font.render('Respawn', True, 'white')
+    screen.blit(title, ((960 - (title.get_width() / 2)), 440))
+    width, height = start_button.get_width() * 1.2, start_button.get_height() * 1.2
+    rect = (pygame.Rect((960 - width / 2), 640, width, height))
+    pygame.draw.rect(screen, "green", rect, 2, 15)
+    screen.blit(start_button, (960 - (start_button.get_width() / 2), 645))
+    pygame.display.update()
+
+
+def draw_game_over_screen(screen, score):
+    screen.fill("black")
+    font = pygame.font.SysFont("elephant", 120)
+    small_font = pygame.font.SysFont("roboto", 60)
+    title = font.render('Game over!', True, "white")
+    start_button = small_font.render(f'Your final score was {score}', True, 'white')
+    screen.blit(title, ((960 - (title.get_width() / 2)), 440))
+    screen.blit(start_button, (960 - (start_button.get_width() / 2), 645))
+    pygame.display.update()
