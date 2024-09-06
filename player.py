@@ -15,6 +15,7 @@ class Player(CircleShape):
         self.speed = PLAYER_SPEED
         self.boost_limit = 0
         self.boost_on = False
+        self.lives = 5
 
     
     def triangle(self):
@@ -112,5 +113,7 @@ class Player(CircleShape):
             self.boost_on = True
 
 
+    def shield_powerup(self):
+        CircleShape(self.position.x, self.position.y, PLAYER_RADIUS + 5)
         
     

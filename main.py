@@ -6,7 +6,7 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 from powerups import SpeedUp
-from menus import draw_start_menu
+from menus import draw_start_menu, draw_pause_menu
 
 def main():
     pygame.init()
@@ -34,6 +34,8 @@ def main():
     score = 0
     
     while True:
+        if game_state != "game":
+            dt = 0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -43,10 +45,26 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     rect = pygame.Rect(892, 640, 136, 71)
                     if rect.collidepoint(event.pos):
-                        print("Go!")
                         game_state = "game"
+
+            if game_state == "pause_menu":
+                draw_pause_menu(screen)
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                    rect = pygame.Rect(812, 640, 296, 86)
+                    if rect.collidepoint(event.pos):
+                        game_state = "game"
+                        clock = pygame.time.Clock()
+
+
+            if game_state == "game_over":
+                pass
+                
                 
         if game_state == "game":
+            keys = pygame.key.get_pressed()
+
+            if keys[pygame.K_ESCAPE]:
+                game_state = "pause_menu"
 
             for object in updateable:
                 object.update(dt)
