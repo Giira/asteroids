@@ -2,7 +2,7 @@ import pygame
 import random
 from asteroid import Asteroid
 from constants import *
-from powerups import SpeedUp
+from powerups import SpeedUp, Shield
 
 
 class AsteroidField(pygame.sprite.Sprite):
@@ -34,6 +34,7 @@ class AsteroidField(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.containers)
         self.spawn_timer = 0.0
         self.boost_spawn_timer = 0.0
+        self.shield_spawn_timer = 0.0
 
 
     def spawn(self, radius, position, velocity):
@@ -44,6 +45,7 @@ class AsteroidField(pygame.sprite.Sprite):
     def update(self, dt):
         self.spawn_timer += dt
         self.boost_spawn_timer += dt
+        self.shield_spawn_timer += dt
 
         if self.spawn_timer > ASTEROID_SPAWN_RATE:
             self.spawn_timer = 0
@@ -67,4 +69,14 @@ class AsteroidField(pygame.sprite.Sprite):
             position = edge[1](random.uniform(0,1))
             speedup = SpeedUp(position.x, position.y, ASTEROID_MIN_RADIUS)
             speedup.velocity = velocity
+
+        if self.shield_spawn_timer > SHIELD_SPAWN_RATE:
+            self.shield_spawn_timer = 0
             
+            edge = random.choice(self.edges)
+            speed = random.randint(60, 120)
+            velocity = edge[0] * speed
+            velocity = velocity.rotate(random.randint(-30, 30))
+            position = edge[1](random.uniform(0,1))
+            shield = Shield(position.x, position.y, ASTEROID_MIN_RADIUS)
+            shield.velocity = velocity

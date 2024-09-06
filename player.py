@@ -15,7 +15,9 @@ class Player(CircleShape):
         self.speed = PLAYER_SPEED
         self.boost_limit = 0
         self.boost_on = False
-        self.lives = 5
+        self.lives = PLAYER_LIVES
+        self.colour = "white"
+        self.shield_on = False
 
     
     def triangle(self):
@@ -28,7 +30,9 @@ class Player(CircleShape):
     
 
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        pygame.draw.polygon(screen, self.colour, self.triangle(), 2)
+        if self.shield_on:
+            pygame.draw.circle(screen, "turquoise", self.position, self.radius + 10, 3)
 
     
     def rotate(self, dt):
@@ -114,6 +118,7 @@ class Player(CircleShape):
 
 
     def shield_powerup(self):
-        CircleShape(self.position.x, self.position.y, PLAYER_RADIUS + 5)
+        if not self.shield_on:
+            self.shield_on = True
         
     

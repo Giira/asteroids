@@ -5,7 +5,7 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
-from powerups import SpeedUp
+from powerups import SpeedUp, Shield
 from menus import draw_start_menu, draw_pause_menu
 
 def main():
@@ -26,6 +26,7 @@ def main():
     AsteroidField.containers = (updateable)
     Shot.containers = (shots, updateable, drawable)
     SpeedUp.containers = (updateable, drawable, powerups)
+    Shield.containers = (updateable, drawable, powerups)
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
@@ -71,9 +72,13 @@ def main():
             
             for asteroid in asteroids:
                 if asteroid.collision_check(player):
-                    print("Game Over!")
-                    print(f"Score: {score}")
-                    sys.exit()
+                    if player.shield_on:
+                        asteroid.kill()
+                        player.shield_on = False
+                    else:
+                        print("Game Over!")
+                        print(f"Score: {score}")
+                        sys.exit()
                 for shot in shots:
                     if shot.collision_check(asteroid):
                         shot.kill()
@@ -83,7 +88,10 @@ def main():
             for powerup in powerups:
                 if powerup.collision_check(player):
                     powerup.kill()
-                    player.speed_boost()
+                    if powerup.powerup == "speedup":
+                        player.speed_boost()
+                    if powerup.powerup == "shield":
+                        player.shield_powerup()
             
             screen.fill("black")
 
